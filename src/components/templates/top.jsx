@@ -1,16 +1,17 @@
 import styled from "styled-components";
-import SiteHeader from "components/atoms/site_header";
+import TopWrapper from "components/atoms/top_wrapper";
+import media from 'modules/media_query';
 
 const TopTemplate = (props) => {
-  console.log(props)
   return(
-    <div className={props.className}>
-      <SiteHeader />
-    </div>
+    <TopWrapper className={props.className}>
+    </TopWrapper>
   );
 }
 
 const StyledTopTemplate = styled(TopTemplate)`
+${media.mobile`
+`}
 `;
 
 export default StyledTopTemplate;
