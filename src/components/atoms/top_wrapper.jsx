@@ -1,21 +1,24 @@
 import styled from 'styled-components';
 import media from 'modules/media_query.js';
 import SiteHeader from "components/atoms/site_header";
+import { SITE_HEADER_HEIGHT } from 'modules/constants';
 
-const TopWapper = (props) => {
+const TopWapper = ({className, children}) => {
 
 	return(
-    <div className={`${props.className} TopWrapper`}>
+    <div className={`${className} TopWrapper`}>
       <SiteHeader />
+      {children}
     </div>
   )
 }
 
 const StyledTopWapper = styled(TopWapper)`
-width: 70vw;
-min-width: 910px;
+width: 60vw;
+min-width: 768px;
 margin: 0 auto;
 min-height: 100vh;
+padding-top: ${SITE_HEADER_HEIGHT + 12}px;
 
 ${media.mobile`
 overflow-x: hidden;

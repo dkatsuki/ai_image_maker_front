@@ -33,15 +33,15 @@ body {
 	line-height: 1.6;
 }
 h1 {
-	font-size: 140%;
+	font-size: 1.8rem;
 	font-weight: bold;
 }
 h2 {
-	font-size: 125%;
+	font-size: 1.5rem;
 	font-weight: bold;
 }
 h3 {
-	font-size: 115%;
+	font-size: 1.2rem;
 	font-weight: bold;
 }
 ul, ol {

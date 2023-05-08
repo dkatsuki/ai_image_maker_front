@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import media from 'modules/media_query';
 import colors from 'modules/colors';
+import { SITE_HEADER_HEIGHT } from 'modules/constants';
 
 const SiteHeader = ({className}) => {
   return (
@@ -20,8 +21,9 @@ const SiteHeader = ({className}) => {
 const StyledSiteHeader = styled(SiteHeader)`
 position: fixed;
 left: 0;
+top: 0;
 width: 100vw;
-height: 56px;
+height: ${SITE_HEADER_HEIGHT}px;
 display: flex;
 align-items: center;
 justify-content: center;
