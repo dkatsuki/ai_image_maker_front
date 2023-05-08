@@ -14,11 +14,11 @@ const TopWapper = ({className, children}) => {
 }
 
 const StyledTopWapper = styled(TopWapper)`
-width: 60vw;
-min-width: 768px;
+width: 50vw;
+min-width: 600px;
 margin: 0 auto;
 min-height: 100vh;
-padding-top: ${SITE_HEADER_HEIGHT + 12}px;
+padding-top: ${SITE_HEADER_HEIGHT + 28}px;
 
 ${media.mobile`
 overflow-x: hidden;
