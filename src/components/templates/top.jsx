@@ -1,16 +1,16 @@
 import styled from "styled-components";
+import SiteHeader from "components/atoms/site_header";
 
 const TopTemplate = (props) => {
   console.log(props)
   return(
     <div className={props.className}>
-      <h1>{props.title}</h1>
+      <SiteHeader />
     </div>
   );
 }
 
 const StyledTopTemplate = styled(TopTemplate)`
-background-color: green;
 `;
 
 export default StyledTopTemplate;
