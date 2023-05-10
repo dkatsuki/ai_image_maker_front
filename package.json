@@ -16,7 +16,8 @@
     "react-dom": "18.2.0",
     "styled-components": "^5.3.6",
     "query-string-parser": "^0.2.3",
-    "styled-media-query": "^2.1.2"
+    "styled-media-query": "^2.1.2",
+    "axios": "^1.2.0"
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.26"

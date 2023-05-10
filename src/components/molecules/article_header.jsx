@@ -42,7 +42,6 @@ const StyledArticleHeader = styled(ArticleHeader)`
 display: flex;
 align-items: center;
 gap: 0.5rem;
-margin-bottom: 0.5rem;
 
 div:first-child {
   height: ${(props) => { return(`${getFontSize(props.tagName)}`)}};
