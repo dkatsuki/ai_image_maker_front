@@ -38,13 +38,15 @@ const GeneratedAiImagesDisplayArea = ({ className, aiImages }) => {
 
     const results = aiImages.map((aiImage) => {
       return(
-        <Image
-          key={aiImage.id}
-          src={aiImage.image_source}
-          alt="image"
-          width={aiImage.width}
-          height={aiImage.height}
-        />
+        <a href={aiImage.image_source} download>
+          <Image
+            key={aiImage.id}
+            src={aiImage.image_source}
+            alt="image"
+            width={aiImage.width}
+            height={aiImage.height}
+          />
+        </a>
       )
     })
 
@@ -88,9 +90,13 @@ padding-top: 0.5rem;
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 0.5rem 2%;
-  > img {
+  > a {
     width: 32%;
     height: auto;
+    > img {
+      width: 100%;
+      height: auto;
+    }
   }
 }
 `;
