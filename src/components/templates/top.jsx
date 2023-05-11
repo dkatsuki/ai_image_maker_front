@@ -16,8 +16,6 @@ const GeneratedAiImagesDisplayArea = ({ className, aiImages }) => {
   const [images, setImages] = useState([]);
   const [alertMessages, setAlertMessages] = useState(null);
 
-  console.log(aiImages)
-
   useEffect(() => {
     const isError = !!aiImages[0] && !!aiImages[0].errors_list;
 
@@ -27,8 +25,6 @@ const GeneratedAiImagesDisplayArea = ({ className, aiImages }) => {
       const errorMessages = Object.keys(errorsList).map((key) => {
         return(errorsList[key][0])
       })
-
-      console.log(errorMessages)
 
       setImages([]);
       setAlertMessages(
@@ -90,7 +86,7 @@ padding-top: 0.5rem;
 > div:last-child {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 0.5rem 2%;
   > img {
     width: 32%;
