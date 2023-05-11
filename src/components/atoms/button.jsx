@@ -15,8 +15,9 @@ const StyledButton = styled(Button)`
 display: inline-block;
 background-color: ${colors.main};
 border-radius: 4px;
-padding: 0.5rem 1rem;
+padding: 0.3rem 0.5rem;
 color: ${colors.white};
+font-weight: bold;
 cursor: pointer;
 `;
 

@@ -8,9 +8,9 @@ import Button from "components/atoms/button";
 import { useState } from "react";
 import { aiImageConfig } from "modules/model_configs.js";
 import Image from "next/image";
+import SelectWithLabel from "components/molecules/select_with_label";
 
 const GeneratedAiImagesDisplayArea = ({ className, aiImages }) => {
-
   const images = useMemo(() => {
     const results = aiImages.map((aiImage) => {
       return(
@@ -39,24 +39,44 @@ const GeneratedAiImagesDisplayArea = ({ className, aiImages }) => {
 }
 
 const StyledGeneratedAiImagesDisplayArea = styled(GeneratedAiImagesDisplayArea)`
+border-top: 1px solid #ccc;
+padding-top: 1rem;
+
+> img {
+  width: 216px;
+  height: 216px;
+}
 `;
 
 const Form = ({ className, setGeneratedAiImages }) => {
   const [aiImage, setAiImage] = useState({
-    spell: '',
+    spell: 'スノボをする可愛い猫',
     width: aiImageConfig.widthOptions[0],
-    height: aiImageConfig.widthOptions[0],
+    height: aiImageConfig.heightOptions[0],
+    n: aiImageConfig.nOptions[0],
   });
 
   const onChange = (event) => {
+    if (event.target.name === 'width') {
+      setAiImage({...aiImage, width: event.target.value, height: event.target.value});
+      return;
+    }
     setAiImage({...aiImage, [event.target.name]: event.target.value});
   }
 
   const generateImage = () => {
-    api.httpPost('/ai_images', {ai_image: aiImage, to_json_option: {methods: ['image_source']}}, (response) => {
-      setAiImage(response.body);
-      setGeneratedAiImages([response.body]);
-    })
+    let requestPath = '/ai_images';
+    const postData = {ai_image: aiImage, to_json_option: {methods: ['image_source']}}
+    if (Number(aiImage.n) < 2) {
+      api.httpPost(requestPath, postData, (response) => {
+        setGeneratedAiImages([response.body]);
+      })
+    } else {
+      requestPath  = '/ai_images/create_multiple_pattern_image_records'
+      api.httpPost(requestPath, postData, (response) => {
+        setGeneratedAiImages(response.body);
+      })
+    }
   }
 
   const translateToEnglish = () => {
@@ -74,6 +94,21 @@ const Form = ({ className, setGeneratedAiImages }) => {
         onChange={onChange}
       />
       <div>
+        <SelectWithLabel
+          name="width"
+          options={['小', '中', '大']}
+          values={aiImageConfig.widthOptions}
+          label="サイズ"
+          onChange={onChange}
+          value={aiImage.width}
+        />
+        <SelectWithLabel
+          name="n"
+          options={[1, 2, 4, 8]}
+          label="作成する画像の数"
+          onChange={onChange}
+          value={aiImage.n}
+        />
         <Button content="英語に翻訳" onClick={translateToEnglish} />
         <Button content="画像生成" onClick={generateImage} />
       </div>
@@ -94,7 +129,13 @@ line-height: 1.5rem;
 
 > div:last-child {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+
+  > .SelectWithLabel {
+    height: 100%;
+  }
 }
 `;
 

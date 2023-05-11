@@ -19,6 +19,7 @@ const SiteHeader = ({className}) => {
 }
 
 const StyledSiteHeader = styled(SiteHeader)`
+background-color: ${colors.white};
 position: fixed;
 left: 0;
 top: 0;
