@@ -1,9 +1,11 @@
 export default {
-  white: '#FFFFFF',
+  main: '#0951D9',
   black: '#000000',
+  white: '#FFFFFF',
   gray: '#8B8B8B',
   lightGray: '#f0f0f0',
-  main: '#0951D9',
+  successGreen: '#c3e6cb',
+  alertRed: '#FF9999',
   hrefBlue: '#202ef7',
   yellow: 'yellow',
   lineGreen: '#00b900',

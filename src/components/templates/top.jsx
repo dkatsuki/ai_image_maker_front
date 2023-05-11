@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import colors from "modules/colors";
 import {useMemo, useEffect} from "react";
 import TopWrapper from "components/atoms/top_wrapper";
 import media from 'modules/media_query';
@@ -9,9 +10,36 @@ import { useState } from "react";
 import { aiImageConfig } from "modules/model_configs.js";
 import Image from "next/image";
 import SelectWithLabel from "components/molecules/select_with_label";
+import AlertMessages from "components/atoms/alert_messages";
 
 const GeneratedAiImagesDisplayArea = ({ className, aiImages }) => {
-  const images = useMemo(() => {
+  const [images, setImages] = useState([]);
+  const [alertMessages, setAlertMessages] = useState(null);
+
+  console.log(aiImages)
+
+  useEffect(() => {
+    const isError = !!aiImages[0] && !!aiImages[0].errors_list;
+
+    if (isError) {
+      const errorsList = aiImages[0].errors_list;
+
+      const errorMessages = Object.keys(errorsList).map((key) => {
+        return(errorsList[key][0])
+      })
+
+      console.log(errorMessages)
+
+      setImages([]);
+      setAlertMessages(
+        <AlertMessages
+          type="error"
+          messages={errorMessages}
+        />
+      );
+      return;
+    }
+
     const results = aiImages.map((aiImage) => {
       return(
         <Image
@@ -24,27 +52,50 @@ const GeneratedAiImagesDisplayArea = ({ className, aiImages }) => {
       )
     })
 
-    return(results)
+    setImages(results)
+    setAlertMessages(
+      <AlertMessages
+        type="success"
+        messages="画像の生成に成功しました！画像をクリックで保存できます。"
+      />
+    );
   }, [JSON.stringify(aiImages)])
 
-  if (!aiImages || aiImages.length === 0 || !aiImages[0].id) {
+  if (!aiImages || aiImages.length === 0) {
+    return(null);
+  }
+
+  if (!!aiImages[0] && !aiImages[0].id && !aiImages[0].errors_list) {
     return(null);
   }
 
   return(
     <div className={className}>
-      {images}
+      {alertMessages}
+      <div>
+        {images}
+      </div>
     </div>
   )
 }
 
 const StyledGeneratedAiImagesDisplayArea = styled(GeneratedAiImagesDisplayArea)`
 border-top: 1px solid #ccc;
-padding-top: 1rem;
+padding-top: 0.5rem;
 
-> img {
-  width: 216px;
-  height: 216px;
+> .AlertMessages {
+  margin-bottom: 0.5rem;
+}
+
+> div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 2%;
+  > img {
+    width: 32%;
+    height: auto;
+  }
 }
 `;
 
@@ -140,8 +191,7 @@ line-height: 1.5rem;
 `;
 
 const TopTemplate = (props) => {
-  const [generatedAiImages, setGeneratedAiImages] = useState([{
-  }]);
+  const [generatedAiImages, setGeneratedAiImages] = useState([]);
 
   return(
     <TopWrapper className={props.className}>
@@ -152,8 +202,8 @@ const TopTemplate = (props) => {
         文章で指示したり、単語の羅列にしてみたりで結果が色々変わります。<br/>
         英語に翻訳してからの方が精度が高まる傾向があります。
       </p>
-      <StyledForm setGeneratedAiImages={setGeneratedAiImages} />
       <StyledGeneratedAiImagesDisplayArea aiImages={generatedAiImages} />
+      <StyledForm setGeneratedAiImages={setGeneratedAiImages} />
     </TopWrapper>
   );
 }

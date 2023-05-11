@@ -5,7 +5,7 @@ const Button = ({ className, content, onClick }) => {
   content = content || '送信';
 
   return (
-    <div className={`${className} Button`} onClick={onClick}>
+    <div className={`${className} Button`} onClick={onClick} role="button">
       <p>{content}</p>
     </div>
   );
