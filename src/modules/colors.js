@@ -17,5 +17,6 @@ export default {
     gray: (opacity) => {return(`rgba(139, 139, 139, ${opacity})`)},
     red: (opacity) => {return(`rgba(240, 20, 20, ${opacity})`)},
     white: (opacity) => {return(`rgba(255, 255, 255, ${opacity})`)},
+    main: (opacity) => {return(`rgba(9, 81, 217, ${opacity})`)},
   }
 }

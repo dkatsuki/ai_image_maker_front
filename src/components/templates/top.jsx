@@ -11,6 +11,7 @@ import { aiImageConfig } from "modules/model_configs.js";
 import Image from "next/image";
 import SelectWithLabel from "components/molecules/select_with_label";
 import AlertMessages from "components/atoms/alert_messages";
+import Loading from "components/atoms/loading";
 
 const GeneratedAiImagesDisplayArea = ({ className, aiImages }) => {
   const [images, setImages] = useState([]);
@@ -101,13 +102,23 @@ padding-top: 0.5rem;
 }
 `;
 
-const Form = ({ className, setGeneratedAiImages }) => {
+const Form = ({ className, reset, setGeneratedAiImages }) => {
   const [aiImage, setAiImage] = useState({
     spell: 'スノボをする可愛い猫',
     width: aiImageConfig.widthOptions[0],
     height: aiImageConfig.heightOptions[0],
     n: aiImageConfig.nOptions[0],
   });
+
+  const onReset = () => {
+    reset();
+    setAiImage({
+      spell: 'スノボをする可愛い猫',
+      width: aiImageConfig.widthOptions[0],
+      height: aiImageConfig.heightOptions[0],
+      n: aiImageConfig.nOptions[0],
+    });
+  }
 
   const onChange = (event) => {
     if (event.target.name === 'width') {
@@ -162,6 +173,7 @@ const Form = ({ className, setGeneratedAiImages }) => {
           onChange={onChange}
           value={aiImage.n}
         />
+        <Button content="リセット" onClick={onReset} />
         <Button content="英語に翻訳" onClick={translateToEnglish} />
         <Button content="画像生成" onClick={generateImage} />
       </div>
@@ -195,6 +207,10 @@ line-height: 1.5rem;
 const TopTemplate = (props) => {
   const [generatedAiImages, setGeneratedAiImages] = useState([]);
 
+  const reset = () => {
+    setGeneratedAiImages([]);
+  }
+
   return(
     <TopWrapper className={props.className}>
       <ArticleHeader content="AI画像生成サービスAigazo(アイガゾ)とは？" />
@@ -205,7 +221,11 @@ const TopTemplate = (props) => {
         英語に翻訳してからの方が精度が高まる傾向があります。
       </p>
       <StyledGeneratedAiImagesDisplayArea aiImages={generatedAiImages} />
-      <StyledForm setGeneratedAiImages={setGeneratedAiImages} />
+      <StyledForm
+        setGeneratedAiImages={setGeneratedAiImages}
+        reset={reset}
+      />
+      <Loading text="ただ今画像を作成しています...." />
     </TopWrapper>
   );
 }
