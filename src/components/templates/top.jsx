@@ -217,6 +217,7 @@ position: relative;
   align-items: center;
   justify-content: flex-end;
   gap: 1rem;
+  flex-wrap: wrap;
 
   > .SelectWithLabel {
     height: 100%;
@@ -242,7 +243,7 @@ const TopTemplate = (props) => {
 const StyledTopTemplate = styled(TopTemplate)`
 
 > * {
-  margin-bottom: 1rem;
+  margin-bottom: 0.2rem;
 }
 
 > p {

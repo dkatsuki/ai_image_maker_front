@@ -1,1 +1,2 @@
-export const SITE_HEADER_HEIGHT = 56;
+export const DESKTOP_SITE_HEADER_HEIGHT = 56;
+export const MOBILE_SITE_HEADER_HEIGHT = 42;

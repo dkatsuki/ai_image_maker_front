@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import media from 'modules/media_query';
 import colors from 'modules/colors';
-import { SITE_HEADER_HEIGHT } from 'modules/constants';
+import { DESKTOP_SITE_HEADER_HEIGHT, MOBILE_SITE_HEADER_HEIGHT } from 'modules/constants';
 
 const SiteHeader = ({className}) => {
   return (
@@ -24,7 +24,7 @@ position: fixed;
 left: 0;
 top: 0;
 width: 100vw;
-height: ${SITE_HEADER_HEIGHT}px;
+height: ${DESKTOP_SITE_HEADER_HEIGHT}px;
 display: flex;
 align-items: center;
 justify-content: center;
@@ -37,6 +37,7 @@ margin-bottom: 1.5rem;
 }
 
 ${media.mobile`
+height: ${MOBILE_SITE_HEADER_HEIGHT}px;
 `}
 `;
 

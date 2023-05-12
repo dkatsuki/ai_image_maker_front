@@ -39,16 +39,22 @@ const getFontSize = (tagName) => {
 };
 
 const StyledArticleHeader = styled(ArticleHeader)`
-display: flex;
+display: grid; /* displayをflexからgridに変更 */
 align-items: center;
+grid-template-columns: min-content 1fr; /* 最初の列には必要最低限のスペースを、2つ目の列には残りのスペースを割り当てます */
 gap: 0.5rem;
 
 div:first-child {
-  height: ${(props) => { return(`${getFontSize(props.tagName)}`)}};
+  height: 90%; /* heightを100%に設定 */
   width: 0.5rem;
   border-radius: 0.25rem;
   background-color: ${colors.main};
 }
+
+> *:last-child {
+  line-height: ${({tagName}) => {return(getFontSize(tagName))}};
+}
+
 `;
 
 StyledArticleHeader.defaultProps = {
