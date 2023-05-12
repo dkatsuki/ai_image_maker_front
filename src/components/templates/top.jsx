@@ -39,9 +39,8 @@ const GeneratedAiImagesDisplayArea = ({ className, aiImages }) => {
 
     const results = aiImages.map((aiImage) => {
       return(
-        <a href={aiImage.image_source} download>
+        <a key={aiImage.id} href={aiImage.image_source} download>
           <Image
-            key={aiImage.id}
             src={aiImage.image_source}
             alt="image"
             width={aiImage.width}
