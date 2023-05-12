@@ -123,7 +123,7 @@ const Form = ({ className }) => {
 
   const startLoading = (message) => {
     setIsLoading(true);
-    onReset();
+    setGeneratedAiImages([]);
     setLoadingMessage(message);
   };
 
