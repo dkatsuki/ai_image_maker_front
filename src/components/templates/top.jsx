@@ -95,6 +95,7 @@ padding-top: 0.5rem;
     width: 32%;
     height: auto;
     > img {
+      border: solid 1px ${colors.black};
       width: 100%;
       height: auto;
     }
@@ -102,23 +103,33 @@ padding-top: 0.5rem;
 }
 `;
 
-const Form = ({ className, reset, setGeneratedAiImages }) => {
-  const [aiImage, setAiImage] = useState({
-    spell: 'スノボをする可愛い猫',
+const Form = ({ className }) => {
+  const [generatedAiImages, setGeneratedAiImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
+  const defaultAiImage = {
+    spell: '',
     width: aiImageConfig.widthOptions[0],
     height: aiImageConfig.heightOptions[0],
     n: aiImageConfig.nOptions[0],
-  });
+  }
+
+  const [aiImage, setAiImage] = useState(defaultAiImage);
 
   const onReset = () => {
-    reset();
-    setAiImage({
-      spell: 'スノボをする可愛い猫',
-      width: aiImageConfig.widthOptions[0],
-      height: aiImageConfig.heightOptions[0],
-      n: aiImageConfig.nOptions[0],
-    });
+    setGeneratedAiImages([]);
+    setAiImage(defaultAiImage);
   }
+
+  const startLoading = (message) => {
+    setIsLoading(true);
+    onReset();
+    setLoadingMessage(message);
+  };
+
+  const finishLoading = () => {
+    setIsLoading(false);
+  };
 
   const onChange = (event) => {
     if (event.target.name === 'width') {
@@ -128,36 +139,43 @@ const Form = ({ className, reset, setGeneratedAiImages }) => {
     setAiImage({...aiImage, [event.target.name]: event.target.value});
   }
 
-  const generateImage = () => {
+  const onGenerateImage = () => {
     let requestPath = '/ai_images';
     const postData = {ai_image: aiImage, to_json_option: {methods: ['image_source']}}
+    startLoading(`画像を生成中です.....\n数秒から〜十数秒程度かかります......`);
+
     if (Number(aiImage.n) < 2) {
       api.httpPost(requestPath, postData, (response) => {
         setGeneratedAiImages([response.body]);
+        finishLoading();
       })
     } else {
       requestPath  = '/ai_images/create_multiple_pattern_image_records'
       api.httpPost(requestPath, postData, (response) => {
         setGeneratedAiImages(response.body);
+        finishLoading();
       })
     }
   }
 
-  const translateToEnglish = () => {
+  const onTranslateToEnglish = () => {
+    startLoading(`翻訳中です....少々お待ちください`);
     api.httpPost('/translations/to_english', {text: aiImage.spell}, (response) => {
+      finishLoading();
       setAiImage({...aiImage, spell: response.text});
     })
   }
 
   return (
     <div className={className}>
+      <StyledGeneratedAiImagesDisplayArea aiImages={generatedAiImages} />
       <textarea
         className={`${className} TextArea`}
         name="spell"
         value={aiImage.spell}
         onChange={onChange}
       />
-      <div>
+      <div className="button-line" >
         <SelectWithLabel
           name="width"
           options={['小', '中', '大']}
@@ -174,9 +192,10 @@ const Form = ({ className, reset, setGeneratedAiImages }) => {
           value={aiImage.n}
         />
         <Button content="リセット" onClick={onReset} />
-        <Button content="英語に翻訳" onClick={translateToEnglish} />
-        <Button content="画像生成" onClick={generateImage} />
+        <Button content="英語に翻訳" onClick={onTranslateToEnglish} />
+        <Button content="画像生成" onClick={onGenerateImage} />
       </div>
+      <Loading isLoading={isLoading} text={loadingMessage} />
     </div>
   );
 };
@@ -186,13 +205,14 @@ width: 100%;
 border-radius: 4px;
 font-size: 1rem;
 line-height: 1.5rem;
+position: relative;
 
 > textarea {
   width: 100%;
   height: 10.0rem;
 }
 
-> div:last-child {
+> div.button-line {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -205,12 +225,6 @@ line-height: 1.5rem;
 `;
 
 const TopTemplate = (props) => {
-  const [generatedAiImages, setGeneratedAiImages] = useState([]);
-
-  const reset = () => {
-    setGeneratedAiImages([]);
-  }
-
   return(
     <TopWrapper className={props.className}>
       <ArticleHeader content="AI画像生成サービスAigazo(アイガゾ)とは？" />
@@ -220,12 +234,7 @@ const TopTemplate = (props) => {
         文章で指示したり、単語の羅列にしてみたりで結果が色々変わります。<br/>
         英語に翻訳してからの方が精度が高まる傾向があります。
       </p>
-      <StyledGeneratedAiImagesDisplayArea aiImages={generatedAiImages} />
-      <StyledForm
-        setGeneratedAiImages={setGeneratedAiImages}
-        reset={reset}
-      />
-      <Loading text="ただ今画像を作成しています...." />
+      <StyledForm />
     </TopWrapper>
   );
 }

@@ -47,7 +47,11 @@ justify-content: space-around;
 }
 `;
 
-const Loading = ({className, text}) => {
+const Loading = ({className, text, isLoading}) => {
+  if (!isLoading) {
+    return(null);
+  }
+
   return(
     <div className={`${className} Loading`}>
       <StyledIcon />
@@ -61,7 +65,33 @@ const Loading = ({className, text}) => {
 }
 
 const StyledLoading = styled(Loading)`
+display: flex;
+justify-content: center;
+align-items: center;
+
+> div:first-child {
+  margin-right: 1rem;
+}
+
+${(props) => {
+  if (props.displayType == 'mask') {
+    return(
+      `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: ${colors.rgba.white(0.8)};
+      `
+    );
+  }
+}}
 `;
+
+StyledLoading.defaultProps = {
+  displayType: 'mask',
+}
 
 
 export default StyledLoading;
